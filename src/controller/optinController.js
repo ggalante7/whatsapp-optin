@@ -9,10 +9,10 @@ async function getOptins(req, res) {
     try {
         let results = await model.instance.optin.findAsync(params)
 
-        console.log("optinController:getOptin -> success", JSON.stringify({params: params, results: results}));
+        console.log("optinController:getOptin -> success", JSON.stringify({params: params, results: results, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(200).send(results).end();
     } catch (error) {
-        console.log("optinController:getOptin -> failure", JSON.stringify({params: params, error: error}));
+        console.log("optinController:getOptin -> failure", JSON.stringify({params: params, error: error, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(400).send({message: "Ocorreu um erro inesperado"}).end();
     }
 }
@@ -27,7 +27,7 @@ async function getOptinByMeanContact(req, res) {
     try {
         let result = await model.instance.optin.findOneAsync(params);
 
-        console.log("optinController:getOptinByMeanContact -> success", JSON.stringify({params: params, result: result}));
+        console.log("optinController:getOptinByMeanContact -> success", JSON.stringify({params: params, result: result, timeElapsed: Date.now() - req.requestTime + "ms"}));
 
         if (result){
             res.status(200).send(result).end();
@@ -35,7 +35,7 @@ async function getOptinByMeanContact(req, res) {
             res.status(204).send(result).end();
         }
     } catch (error) {
-        console.log("optinController:getOptinByMeanContact -> failure", JSON.stringify({params: params, error: error}));
+        console.log("optinController:getOptinByMeanContact -> failure", JSON.stringify({params: params, error: error, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(400).send({message: "Ocorreu um erro inesperado"}).end();
     }
 }
@@ -50,7 +50,7 @@ async function getOptinByClient(req, res) {
     try {
         let result = await model.instance.optin.findOneAsync(params, {allow_filtering: true});
 
-        console.log("optinController:getOptinByClient -> success", JSON.stringify({params: params, result: result}));
+        console.log("optinController:getOptinByClient -> success", JSON.stringify({params: params, result: result, timeElapsed: Date.now() - req.requestTime + "ms"}));
 
         if (result){
             res.status(200).send(result).end();
@@ -58,7 +58,7 @@ async function getOptinByClient(req, res) {
             res.status(204).send(result).end();
         }
     } catch (error) {
-        console.log("optinController:getOptinByClient -> failure", JSON.stringify({params: params, error: error}));
+        console.log("optinController:getOptinByClient -> failure", JSON.stringify({params: params, error: error, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(400).send({message: "Ocorreu um erro inesperado"}).end();
     }
 }
@@ -78,10 +78,10 @@ async function optin(req, res) {
         await optin.saveAsync();
         await _saveHistory(params, true);
 
-        console.log("optinController:optin -> success", JSON.stringify({params: params}));
+        console.log("optinController:optin -> success", JSON.stringify({params: params, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(201).send(optin).end();
     } catch (error) {
-        console.log("optinController:optin -> failure", JSON.stringify({params: params, error: error}));
+        console.log("optinController:optin -> failure", JSON.stringify({params: params, error: error, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(400).send({ message: "Ocorreu um erro inesperado"}).end();
     }
 }
@@ -100,14 +100,14 @@ async function optout(req, res) {
         if (optin){
             await optin.deleteAsync();
 
-            console.log("optinController:optout -> success", JSON.stringify({params: params}));
+            console.log("optinController:optout -> success", JSON.stringify({params: params, timeElapsed: Date.now() - req.requestTime + "ms"}));
             res.status(204).end();
         }
 
-        console.log("optinController:optout -> already not at database", JSON.stringify({params: params}));
+        console.log("optinController:optout -> already not at database", JSON.stringify({params: params, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(204).end();
     } catch (error) {
-        console.log("optinController:optout -> failure", JSON.stringify({params: params, error: error}));
+        console.log("optinController:optout -> failure", JSON.stringify({params: params, error: error, timeElapsed: Date.now() - req.requestTime + "ms"}));
         res.status(400).send({message: "Ocorreu um erro inesperado"}).end();
     }
 }
@@ -120,7 +120,6 @@ async function _saveHistory(params, status){
         client_id: params.client_id
     }
     try {
-        console.log("optin", params);
         let optin = await model.instance.optin.findOneAsync(historyParams);
         if (optin){
             historyParams.origin = optin.origin;

@@ -1,0 +1,20 @@
+{
+  "name": "whatsapp-optin",
+  "version": "1.0.0",
+  "description": "Optin for whatsapp users",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "whatsapp",
+    "optin"
+  ],
+  "author": "ggalante7",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-cassandra": "^2.3.2"
+  }
+}
